@@ -46,22 +46,29 @@ with open(csvpath) as csvfile:
 
     max_votes = max(vote_count_list)
 
+    num_of_candidates = len(candidate_name_list)
+
     for key in vote_count_dict:
         if vote_count_dict[key] == max_votes:
             winner = key
 
+    text_list = []
+    
+    # print election results to terminal
     print("Election Results")
     print("--------------------------")
     print(f"Total Votes: {total_votes}")
     print("--------------------------")
-    print(f"{candidate_name_list[0]}: {vote_percent_list[0]}% ({vote_count_list[0]})")
-    print(f"{candidate_name_list[1]}: {vote_percent_list[1]}% ({vote_count_list[1]})")
-    print(f"{candidate_name_list[2]}: {vote_percent_list[2]}% ({vote_count_list[2]})")
-    print(f"{candidate_name_list[3]}: {vote_percent_list[3]}% ({vote_count_list[3]})")
+
+    for i in range(num_of_candidates):
+        print(f"{candidate_name_list[i]}: {vote_percent_list[i]}% ({vote_count_list[i]})")
+        text_list.append(f"{candidate_name_list[i]}: {vote_percent_list[i]}% ({vote_count_list[i]})")
+
     print("--------------------------")
     print(f"Winner: {winner}")
     print("--------------------------")
 
+# write election results to text file
 # results file path
 output_path = os.path.join("analysis", "results.csv")
 
@@ -71,15 +78,16 @@ with open(output_path, 'w', newline='') as csvfile:
     # Initialize csv.writer
     csvwriter = csv.writer(csvfile, delimiter=',')
 
+    zipped_text = zip(text_list)
+
     # Write analysis data to text file
     csvwriter.writerows([["Election Results"],
                         ["--------------------------"],
                         [f"Total Votes: {total_votes}"],
-                        ["--------------------------"],
-                        [f"{candidate_name_list[0]}: {vote_percent_list[0]}% ({vote_count_list[0]})"],
-                        [f"{candidate_name_list[1]}: {vote_percent_list[1]}% ({vote_count_list[1]})"],
-                        [f"{candidate_name_list[2]}: {vote_percent_list[2]}% ({vote_count_list[2]})"],
-                        [f"{candidate_name_list[3]}: {vote_percent_list[3]}% ({vote_count_list[3]})"],
-                        ["--------------------------"],
+                        ["--------------------------"]])
+
+    csvwriter.writerows(zipped_text)
+                        
+    csvwriter.writerows([["--------------------------"],
                         [f"Winner: {winner}"],
                         ["--------------------------"]])
