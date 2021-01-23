@@ -61,8 +61,8 @@ with open(csvpath) as csvfile:
     print("--------------------------")
 
     for i in range(num_of_candidates):
-        print(f"{candidate_name_list[i]}: {vote_percent_list[i]}% ({vote_count_list[i]})")
-        text_list.append(f"{candidate_name_list[i]}: {vote_percent_list[i]}% ({vote_count_list[i]})")
+        print(f"{candidate_name_list[i]}: {'{:.3f}'.format(vote_percent_list[i])}% ({vote_count_list[i]})")
+        text_list.append(f"{candidate_name_list[i]}: {'{:.3f}'.format(vote_percent_list[i])}% ({vote_count_list[i]})")
 
     print("--------------------------")
     print(f"Winner: {winner}")
