@@ -4,8 +4,10 @@
 import os
 import csv
 
+# file path to data file
 csvpath = os.path.join('Resources', 'budget_data.csv')
 
+# open csv file
 with open(csvpath) as csvfile:
 
     # CSV reader specifies delimiter and variable that holds contents
@@ -14,9 +16,11 @@ with open(csvpath) as csvfile:
     # Read the header row first (skip this step if there is now header)
     csv_header = next(csvreader)
 
-    # initialize variables
+    # initialize list variables
     months_list = []
     profits_list = []
+    change_in_profit = []
+    new_months_list = [] 
     
     # Read each row of data after the header
     for row in csvreader:
@@ -33,10 +37,6 @@ with open(csvpath) as csvfile:
     # calculate the total profits
     total_profits = sum(profits_list)
   
-    #calculate the average change in profits
-    change_in_profit = []
-    new_months_list = []       
-    
     #calculate change in profits month to month
     for i in range(len(profits_list) - 1):
 
@@ -50,15 +50,17 @@ with open(csvpath) as csvfile:
         # this is done because the month to month change is calculated in the i + 1 month
         new_months_list.append(months_list[i + 1])
 
+    # calculate the average change in profit
     average_change = round(sum(change_in_profit) / len(change_in_profit),2)
     
-    # calculate the greatest increase in profit and the month it occured
+    # calculate the greatest increase in profit
     greatest_increase = max(change_in_profit)
 
-    # calculate the greatest decrease in profit and the month it occured
+    # calculate the greatest decrease in profit
     greatest_decrease = min(change_in_profit)
     
     # find date of greatest increase and decrease in profits
+
     # create dictionary of date:change in profit pairs
     profit_change_dict = dict(zip(new_months_list, change_in_profit))
     
@@ -68,13 +70,13 @@ with open(csvpath) as csvfile:
         # check each key value pair and check if value is equal to greatest increase
         if profit_change_dict[key] == greatest_increase:
 
-            # return the key or month of greatest increase
+            # return the month of greatest increase
             month_of_greatest_increase = key
 
         # check eash key value pair and check if value is equal to greatest decrease
         elif profit_change_dict[key] == greatest_decrease:
 
-            # return the key or month of greatest decrease
+            # return the month of greatest decrease
             month_of_greatest_decrease = key
         
 
@@ -87,8 +89,10 @@ print(f"Average Change: ${average_change}")
 print(f"Greatest Increase In Profits: {month_of_greatest_increase} (${greatest_increase})")
 print(f"Greatest Decrease In Profits: {month_of_greatest_decrease} (${greatest_decrease})")
     
+# write results to text file
+
 # results file path
-output_path = os.path.join("analysis", "results.csv")
+output_path = os.path.join("analysis", "PyBankResults.csv")
 
 # Open the file using "write" mode.
 with open(output_path, 'w', newline='') as csvfile:
